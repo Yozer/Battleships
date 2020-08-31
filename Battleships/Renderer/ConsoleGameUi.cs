@@ -17,11 +17,15 @@ namespace Battleships.Renderer
 
             try
             {
-                Console.SetWindowSize(55, 35);
+                var width = Math.Min(55, Console.LargestWindowWidth);
+                var height = Math.Min(35, Console.LargestWindowHeight);
+                Console.SetWindowSize(width, height);
                 _writer = new HighSpeedWriter();
                 window = new Window(_writer);
             }
-            catch (Exception ex) when(ex is PlatformNotSupportedException || ex is InvalidOperationException)
+            // some feature might not be available on the current operating system
+            // let's fallback to defaults
+            catch (Exception ex) when(ex is PlatformNotSupportedException || ex is InvalidOperationException || ex is ArgumentOutOfRangeException)
             {
                 window = new Window();
             }
